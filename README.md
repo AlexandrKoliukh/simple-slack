@@ -1,7 +1,5 @@
 ## Simple Slack
 
-###Heroku
-
 [Heroku app](https://shielded-wave-76899.herokuapp.com/)
 
 [![Build Status](https://travis-ci.com/AlexandrKoliukh/frontend-project-lvl4.svg?branch=master)](https://travis-ci.com/AlexandrKoliukh/frontend-project-lvl4)

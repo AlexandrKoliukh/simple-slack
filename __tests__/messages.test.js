@@ -73,3 +73,4 @@ test('post /channels/:id/messages', async () => {
 
   expect(JSON.parse(response.payload)).toMatchObject(expected);
 });
+

@@ -13,3 +13,7 @@ $ make install
 ```sh
 $ make start
 ```
+
+### Demo
+
+[Heroku - simple-slack](https://shielded-wave-76899.herokuapp.com/)

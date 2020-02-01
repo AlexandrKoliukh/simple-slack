@@ -9,15 +9,14 @@ import socket from 'socket.io';
 import fastify from 'fastify';
 import pointOfView from 'point-of-view';
 import fastifyStatic from 'fastify-static';
-import _ from 'lodash';
 import addRoutes from './routes.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const appPath = path.join(__dirname, '..');
 const isDevelopment = !isProduction;
 
-const setUpViews = (app, options) => {
-  const domain = isDevelopment ? `http://localhost:${options.port}` : '';
+const setUpViews = (app) => {
+  const domain = isDevelopment ? 'http://localhost:8080' : '';
   app.register(pointOfView, {
     engine: {
       pug: Pug,
@@ -36,7 +35,7 @@ const setUpStaticAssets = (app) => {
   });
 };
 
-export default (options) => {
+export default (options = {}) => {
   const app = fastify();
 
   setUpViews(app, options);
@@ -44,7 +43,7 @@ export default (options) => {
 
   const io = socket(app.server);
 
-  addRoutes(app, io, options.state || {});
+  addRoutes(app, io, options.state);
 
   return app;
 };

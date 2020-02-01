@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  List, ListItem, ListItemText
+  List, ListItem, ListItemText,
 } from '@material-ui/core';
 
 const App = (props) => {
@@ -12,7 +12,7 @@ const App = (props) => {
         const { id, name } = channel;
         return (
           <ListItem key={id}>
-            <ListItemText primary={name}/>
+            <ListItemText primary={name} />
           </ListItem>
         );
       })}

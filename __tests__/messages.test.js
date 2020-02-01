@@ -46,7 +46,7 @@ test('post /channels/:id/messages', async () => {
     ],
   };
 
-  const app = buildApp(state);
+  const app = buildApp({ state });
 
   const payload = {
     data: {

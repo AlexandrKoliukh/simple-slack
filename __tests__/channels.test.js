@@ -70,7 +70,7 @@ test('delete /channels/:id', async () => {
       { id: 100, name: 'custom', removable: true },
     ],
   };
-  const app = buildApp(state);
+  const app = buildApp({ state });
   const response = await app.inject({
     method: 'DELETE',
     url: buildUrl('channels/100'),
@@ -85,7 +85,7 @@ test('patch /channels/:id', async () => {
     ],
   };
 
-  const app = buildApp(state);
+  const app = buildApp({ state });
 
   const payload = {
     data: {

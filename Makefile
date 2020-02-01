@@ -17,6 +17,9 @@ build:
 	npm run build
 
 test:
+	npm test
+
+test-covearge:
 	npm test --coverage
 
 lint:

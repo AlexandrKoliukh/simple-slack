@@ -1,23 +1,14 @@
-import React from 'react';
-import {
-  List, ListItem, ListItemText,
-} from '@material-ui/core';
+import React, { useContext } from 'react';
+import SideNavigation from './SideNavigation';
+import { UserNameContext } from './ReactComponents';
 
-const App = (props) => {
+function App(props) {
   const { channels } = props;
+  const userName = useContext(UserNameContext);
 
   return (
-    <List component="nav" disablePadding>
-      {channels.map((channel) => {
-        const { id, name } = channel;
-        return (
-          <ListItem key={id}>
-            <ListItemText primary={name} />
-          </ListItem>
-        );
-      })}
-    </List>
+    <SideNavigation channels={channels} />
   );
-};
+}
 
 export default App;

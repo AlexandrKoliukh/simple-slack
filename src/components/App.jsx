@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import SideNavigation from './SideNavigation';
-import { UserNameContext } from './ReactContext';
+import { UserameContext } from '../common/userameContext';
 import MessageForm from './MessageForm';
 import ChatWindow from './ChatWindow';
 
 function App(props) {
   const { channels, messages } = props;
-  const userName = useContext(UserNameContext);
+  const userName = useContext(UserameContext);
 
   return (
     <div className="container-fluid">

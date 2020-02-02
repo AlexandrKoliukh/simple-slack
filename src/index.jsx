@@ -13,7 +13,7 @@ import ReactDOM from 'react-dom';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import App from './components/App';
-import { UserameContext } from './common/userameContext';
+import UsernameContext from './common/UserameContext';
 import reducer from './store';
 import { addMessage } from './store/messagesSlice';
 
@@ -51,9 +51,9 @@ const currentUserName = Cookies.get('userName');
 
 ReactDOM.render(
   <Provider store={store}>
-    <UserameContext.Provider value={currentUserName}>
+    <UsernameContext.Provider value={currentUserName}>
       <App />
-    </UserameContext.Provider>
+    </UsernameContext.Provider>
   </Provider>,
   document.getElementById('chat'),
 );

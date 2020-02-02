@@ -46,14 +46,14 @@ function MessageForm() {
       {messagesError !== null && <div>{messagesError.message}</div>}
       <form onSubmit={formik.handleSubmit} className="row d-flex justify-content-between">
         <div className="form-group col-11">
-        <textarea
-          value={formik.values.message}
-          onChange={formik.handleChange}
-          className={inputClasses}
-          id="message"
-          aria-describedby="messageHelp"
-          placeholder={t('inputMessagePlaceholder')}
-        />
+          <textarea
+            value={formik.values.message}
+            onChange={formik.handleChange}
+            className={inputClasses}
+            id="message"
+            aria-describedby="messageHelp"
+            placeholder={t('inputMessagePlaceholder')}
+          />
         </div>
         <button
           type="submit"

@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import SideNavigation from './SideNavigation';
-import { UserameContext } from '../common/userameContext';
+import UsernameContext from '../common/UserameContext';
 import MessageForm from './MessageForm';
 import ChatWindow from './ChatWindow';
 
 function App(props) {
   const { channels, messages } = props;
-  const userName = useContext(UserameContext);
+  const userName = useContext(UsernameContext);
 
   return (
     <div className="container-fluid">
@@ -15,7 +15,7 @@ function App(props) {
           <SideNavigation channels={channels} />
         </div>
         <div className="col-10">
-          <ChatWindow messages={messages} />
+          <ChatWindow messages={messages} userName={userName} />
         </div>
         <div className="col-11">
           <MessageForm />

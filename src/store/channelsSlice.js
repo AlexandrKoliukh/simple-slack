@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { remove } from 'lodash';
+import * as service from '../service';
 
 const initialState = {
   data: [],
@@ -13,9 +15,10 @@ const channels = createSlice({
       const { newChannel } = action.payload;
       state.data.push(newChannel);
     },
-    // removeChannel(state, action) {
-    //   console.log(action);
-    // },
+    removeChannelHandler(state, action) {
+      const { id } = action.payload;
+      remove(state.data, (i) => i.id === id);
+    },
     changeActiveChannel(state, action) {
       const { id } = action.payload;
       state.activeChannelId = id;
@@ -25,6 +28,12 @@ const channels = createSlice({
 
 const { actions, reducer } = channels;
 
-export const { addChannel, changeActiveChannel, removeChannel } = actions;
+export const { addChannel, changeActiveChannel, removeChannelHandler } = actions;
+
+export const removeChannel = (id) => (dispatch) => {
+  console.log(id);
+  dispatch(removeChannelHandler({ id }));
+  service.deleteChannel(id);
+};
 
 export default reducer;

@@ -1,69 +1,69 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
+import { Button, Col, Form } from 'react-bootstrap';
 import * as messagesActions from '../store/messagesSlice';
 import useActions from '../common/useActions';
+import UsernameContext from '../common/UserameContext';
 
 function MessageForm() {
   const { t } = useTranslation();
   const binnedMessagesActions = useActions(messagesActions);
-  const { activeChannelId, isLoadingMessages, messagesError } = useSelector((state) => {
+  const { activeChannelId, isPostingMessages } = useSelector((state) => {
     const { channels, messages } = state;
     return {
       activeChannelId: channels.activeChannelId,
-      isLoadingMessages: messages.isLoading,
-      messagesError: messages.error,
+      isPostingMessages: messages.isPosting,
     };
   });
 
-  const validate = (values) => {
-    const errors = {};
-    if (values.message === '') {
-      errors.message = 'Required';
-    }
-
-    return errors;
-  };
+  const username = useContext(UsernameContext);
 
   const formik = useFormik({
     initialValues: { message: '' },
-    validate,
+    validate: (values) => {
+      const errors = {};
+      if (values.message === '') {
+        errors.message = 'Required';
+      }
+      return errors;
+    },
     onSubmit: (values) => {
-      binnedMessagesActions.postMessage(activeChannelId, values.message);
+      const attributes = {
+        text: values.message,
+        username,
+        date: new Date(),
+      };
+      binnedMessagesActions.postMessage(activeChannelId, attributes);
       formik.resetForm();
     },
   });
 
   const inputClasses = cn({
-    'form-control': true,
     'is-invalid': !!formik.errors.message,
   });
 
   return (
-    <>
-      {messagesError !== null && <div>{messagesError.message}</div>}
-      <form onSubmit={formik.handleSubmit} className="row d-flex justify-content-between">
-        <div className="form-group col-11">
-          <textarea
+    <Form onSubmit={formik.handleSubmit}>
+      <Form.Row>
+        <Col>
+          <Form.Control
+            placeholder="First name"
+            name="message"
+            className={inputClasses}
             value={formik.values.message}
             onChange={formik.handleChange}
-            className={inputClasses}
-            id="message"
-            aria-describedby="messageHelp"
-            placeholder={t('inputMessagePlaceholder')}
           />
-        </div>
-        <button
-          type="submit"
-          className="btn btn-primary col-1"
-          disabled={isLoadingMessages}
-        >
-          {t('sendMessage')}
-        </button>
-      </form>
-    </>
+        </Col>
+        <Col>
+          <Button variant="primary" type="submit" disabled={isPostingMessages}>
+            {t('sendMessage')}
+          </Button>
+        </Col>
+      </Form.Row>
+    </Form>
   );
 }
 

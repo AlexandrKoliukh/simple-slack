@@ -7,8 +7,8 @@ const dataConstructor = (attributes) => ({
   },
 });
 
-export const postMessage = (channelId, text) => {
-  const data = dataConstructor({ text });
+export const postMessage = (channelId, attributes) => {
+  const data = dataConstructor({ ...attributes });
   return axios
     .post(routes.channelMessagesPath(channelId), data);
 };

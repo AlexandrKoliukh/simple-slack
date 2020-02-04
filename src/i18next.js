@@ -12,12 +12,14 @@ i18next
         translation: {
           sendMessage: 'Send',
           inputMessagePlaceholder: 'Enter message',
+          channels: 'Channels',
         },
       },
       ru: {
         translation: {
           sendMessage: 'Отправить',
           inputMessagePlaceholder: 'Введите сообщение',
+          channels: 'Каналы',
         },
       },
     },

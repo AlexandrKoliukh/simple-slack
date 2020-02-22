@@ -1,14 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import * as messagesActions from '../store/messagesSlice';
 
-function ChatWindow() {
-  const { messages } = useSelector((state) => {
-    const currentChannelId = state.channels.activeChannelId;
-    return {
-      messages: state.messages.data.filter((m) => m.channelId === currentChannelId),
-      activeChannelId: currentChannelId,
-    };
-  });
+function Messages(props) {
+  const { messages } = props;
 
   return (
     <div className="col fields">
@@ -30,4 +25,14 @@ function ChatWindow() {
   );
 }
 
-export default ChatWindow;
+
+const mapStateToProps = (state) => ({
+  messages: state.messages.data,
+  postingState: state.messages.postingState,
+});
+
+const actionCreators = {
+  ...messagesActions,
+};
+
+export default connect(mapStateToProps, actionCreators)(Messages);

@@ -4,7 +4,7 @@ import * as service from '../service';
 
 const initialState = {
   data: [],
-  activeChannelId: 1,
+  currentChannelId: 1,
 };
 
 const channels = createSlice({
@@ -31,7 +31,6 @@ const { actions, reducer } = channels;
 export const { addChannel, changeActiveChannel, removeChannelHandler } = actions;
 
 export const removeChannel = (id) => (dispatch) => {
-  console.log(id);
   dispatch(removeChannelHandler({ id }));
   service.deleteChannel(id);
 };

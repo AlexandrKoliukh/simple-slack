@@ -1,22 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { remove } from 'lodash';
 import * as service from '../service';
 import * as channelsActions from './channelsSlice';
-import { remove } from 'lodash';
 
 const initialState = {
-  isPosting: false,
+  postingState: 'none',
   data: [],
   error: null,
 };
 
 const start = (state) => {
-  state.isPosting = true;
+  state.postingState = 'posting';
   state.error = null;
 };
 
 const failed = (state, action) => {
   const { error } = action.payload;
-  state.isPosting = false;
+  state.postingState = 'failed';
   state.error = error;
 };
 
@@ -26,7 +26,7 @@ const messages = createSlice({
   reducers: {
     postMessageStart: start,
     postMessageSuccess(state) {
-      state.isPosting = false;
+      state.postingState = 'posted';
     },
     postMessageFailure: failed,
     addMessage(state, action) {
@@ -51,7 +51,9 @@ export const {
 export const postMessage = (channelId, attributes) => (dispatch) => {
   dispatch(postMessageStart());
   service.postMessage(channelId, attributes)
-    .then(() => dispatch(postMessageSuccess()))
+    .then(() => {
+      dispatch(postMessageSuccess());
+    })
     .catch((e) => {
       const error = { message: e.message };
       dispatch(postMessageFailure({ error }));

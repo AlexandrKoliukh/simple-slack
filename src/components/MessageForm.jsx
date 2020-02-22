@@ -2,24 +2,15 @@ import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Button, Col, Form } from 'react-bootstrap';
-import * as messagesActions from '../store/messagesSlice';
-import useActions from '../common/useActions';
+import { postMessage as postMessageAction } from '../store/messagesSlice';
 import UsernameContext from '../common/UserameContext';
 
-function MessageForm() {
+function MessageForm(props) {
   const { t } = useTranslation();
-  const binnedMessagesActions = useActions(messagesActions);
-  const { activeChannelId, isPostingMessages } = useSelector((state) => {
-    const { channels, messages } = state;
-    return {
-      activeChannelId: channels.activeChannelId,
-      isPostingMessages: messages.isPosting,
-    };
-  });
-
   const username = useContext(UsernameContext);
+  const { postMessage, currentChannelId, postingState } = props;
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -36,7 +27,7 @@ function MessageForm() {
         username,
         date: new Date(),
       };
-      binnedMessagesActions.postMessage(activeChannelId, attributes);
+      postMessage(currentChannelId, attributes);
       formik.resetForm();
     },
   });
@@ -58,7 +49,7 @@ function MessageForm() {
           />
         </Col>
         <Col>
-          <Button variant="primary" type="submit" disabled={isPostingMessages}>
+          <Button variant="primary" type="submit" disabled={postingState === 'posting'}>
             {t('sendMessage')}
           </Button>
         </Col>
@@ -67,4 +58,13 @@ function MessageForm() {
   );
 }
 
-export default MessageForm;
+const mapStateToProps = (state) => ({
+  postingState: state.messages.postingState,
+  currentChannelId: state.channels.currentChannelId,
+});
+
+const actionCreators = {
+  postMessage: postMessageAction,
+};
+
+export default connect(mapStateToProps, actionCreators)(MessageForm);

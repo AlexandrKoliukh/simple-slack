@@ -17,15 +17,17 @@ import UsernameContext from './common/UserameContext';
 import reducer from './store';
 import { addMessage } from './store/messagesSlice';
 import { addChannel, removeChannelHandler } from './store/channelsSlice';
+import { socketEvents } from './common/constants';
 
-if (process.env.NODE_ENV !== 'production') {
+const isProductionMode = process.env.NODE_ENV !== 'production';
+if (isProductionMode) {
   localStorage.debug = 'chat:*';
 }
 
 const { channels, messages, currentChannelId } = window.gon;
 
 const store = configureStore({
-  devTools: process.env.NODE_ENV !== 'production',
+  devTools: !isProductionMode,
   reducer,
   preloadedState: {
     messages: {
@@ -35,19 +37,19 @@ const store = configureStore({
     channels: {
       data: channels,
       error: null,
-      activeChannelId: currentChannelId,
+      currentChannelId,
     },
   },
 });
 
 io()
-  .on('newMessage', ({ data }) => {
+  .on(socketEvents.newMessage, ({ data }) => {
     store.dispatch(addMessage({ newMessage: data.attributes }));
   })
-  .on('newChannel', ({ data }) => {
+  .on(socketEvents.newChannel, ({ data }) => {
     store.dispatch(addChannel({ newChannel: data.attributes }));
   })
-  .on('removeChannel', ({ data }) => {
+  .on(socketEvents.removeChannel, ({ data }) => {
     store.dispatch(removeChannelHandler({ id: data.id }));
   });
 

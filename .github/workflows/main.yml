@@ -1,4 +1,4 @@
-name: Node.js CI
+name: simple-chat CI
 
 on: [push]
 

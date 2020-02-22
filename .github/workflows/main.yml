@@ -1,4 +1,4 @@
-name: simple-chat CI
+name: simple-slack CI
 
 on: [push]
 

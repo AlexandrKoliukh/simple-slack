@@ -1,20 +1,19 @@
 @import '~bootstrap/scss/bootstrap';
 
 html {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   font-size: 14px;
 }
 
 body {
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+  height: 100%;
+  padding-top: 10px;
 }
 
 #chat {
-  height: calc(100% - 50px);
-}
-
-.fields {
-  overflow-y: scroll;
-  height: 90%;
+  height: 100%;
 }

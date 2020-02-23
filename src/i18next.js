@@ -10,16 +10,22 @@ i18next
     resources: {
       en: {
         translation: {
-          sendMessage: 'Send',
           inputMessagePlaceholder: 'Enter message',
           channels: 'Channels',
+          newChannel: 'New channel',
+          errorMessages: {
+            message: 'Required',
+          },
         },
       },
       ru: {
         translation: {
-          sendMessage: 'Отправить',
           inputMessagePlaceholder: 'Введите сообщение',
           channels: 'Каналы',
+          newChannel: 'Новый канал',
+          errorMessages: {
+            message: 'Обязательное поле',
+          },
         },
       },
     },

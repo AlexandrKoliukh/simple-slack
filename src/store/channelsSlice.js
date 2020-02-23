@@ -4,7 +4,7 @@ import * as service from '../service';
 
 const initialState = {
   data: [],
-  currentChannelId: 1,
+  error: null,
 };
 
 const channels = createSlice({
@@ -19,20 +19,35 @@ const channels = createSlice({
       const { id } = action.payload;
       remove(state.data, (i) => i.id === id);
     },
-    changeActiveChannel(state, action) {
+    changeCurrentChannel(state, action) {
       const { id } = action.payload;
-      state.activeChannelId = id;
+      state.currentChannelId = id;
+    },
+    channelsError(state, action) {
+      const { error } = action.payload;
+      state.error = error;
     },
   },
 });
 
 const { actions, reducer } = channels;
 
-export const { addChannel, changeActiveChannel, removeChannelHandler } = actions;
+export const {
+  addChannel, changeCurrentChannel, removeChannelHandler, channelsError,
+} = actions;
+
+export const createChannel = (name) => (dispatch) => {
+  service.createChannel(name)
+    .catch((error) => {
+      dispatch(channelsError({ error }));
+    });
+};
 
 export const removeChannel = (id) => (dispatch) => {
-  dispatch(removeChannelHandler({ id }));
-  service.deleteChannel(id);
+  service.deleteChannel(id)
+    .catch((error) => {
+      dispatch(channelsError({ error }));
+    });
 };
 
 export default reducer;

@@ -25,7 +25,7 @@ export const patchChannel = (channelId, name) => {
 export const deleteChannel = (channelId) => axios
   .delete(routes.channelPath(channelId));
 
-export const postChannel = (name) => {
+export const createChannel = (name) => {
   const data = dataConstructor({ name });
   return axios.post(routes.channelsPath(), data);
 };

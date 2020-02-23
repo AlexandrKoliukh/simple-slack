@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as messagesActions from '../store/messagesSlice';
+import { filter } from 'lodash';
+import * as messagesActions from '../../store/messagesSlice';
 
 function Messages(props) {
-  const { messages } = props;
+  const { messages, currentChannelId } = props;
+  const messagesForCurrentChannel = filter(messages, { channelId: currentChannelId });
 
   return (
     <div className="col fields">
       {
-        messages.map((m) => {
+        messagesForCurrentChannel.map((m) => {
           const {
             text, id, username, date,
           } = m;
@@ -29,6 +31,7 @@ function Messages(props) {
 const mapStateToProps = (state) => ({
   messages: state.messages.data,
   postingState: state.messages.postingState,
+  currentChannelId: state.channels.currentChannelId,
 });
 
 const actionCreators = {

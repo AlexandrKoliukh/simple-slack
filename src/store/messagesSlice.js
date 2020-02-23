@@ -2,21 +2,22 @@ import { createSlice } from '@reduxjs/toolkit';
 import { remove } from 'lodash';
 import * as service from '../service';
 import * as channelsActions from './channelsSlice';
+import { messagesStates } from '../common/constants';
 
 const initialState = {
-  postingState: 'none',
+  postingState: messagesStates.none,
   data: [],
   error: null,
 };
 
 const start = (state) => {
-  state.postingState = 'posting';
+  state.postingState = messagesStates.posting;
   state.error = null;
 };
 
 const failed = (state, action) => {
   const { error } = action.payload;
-  state.postingState = 'failed';
+  state.postingState = messagesStates.failed;
   state.error = error;
 };
 
@@ -26,7 +27,7 @@ const messages = createSlice({
   reducers: {
     postMessageStart: start,
     postMessageSuccess(state) {
-      state.postingState = 'posted';
+      state.postingState = messagesStates.posted;
     },
     postMessageFailure: failed,
     addMessage(state, action) {

@@ -19,15 +19,15 @@ import { addMessage } from './store/messagesSlice';
 import { addChannel, removeChannelHandler } from './store/channelsSlice';
 import { socketEvents } from './common/constants';
 
-const isProductionMode = process.env.NODE_ENV !== 'production';
-if (isProductionMode) {
+const isDeveloperMode = process.env.NODE_ENV === 'development';
+if (isDeveloperMode) {
   localStorage.debug = 'chat:*';
 }
 
 const { channels, messages, currentChannelId } = window.gon;
 
 const store = configureStore({
-  devTools: !isProductionMode,
+  devTools: isDeveloperMode,
   reducer,
   preloadedState: {
     messages: {

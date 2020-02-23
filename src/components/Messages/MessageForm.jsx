@@ -3,9 +3,13 @@ import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { connect } from 'react-redux';
-import { Button, Col, Form } from 'react-bootstrap';
-import { postMessage as postMessageAction } from '../store/messagesSlice';
-import UsernameContext from '../common/UserameContext';
+import {
+  Button, Col, Form, Row,
+} from 'react-bootstrap';
+import { MdSend } from 'react-icons/md';
+import { postMessage as postMessageAction } from '../../store/messagesSlice';
+import UsernameContext from '../../common/UserameContext';
+import { messagesStates } from '../../common/constants';
 
 function MessageForm(props) {
   const { t } = useTranslation();
@@ -17,7 +21,7 @@ function MessageForm(props) {
     validate: (values) => {
       const errors = {};
       if (values.message === '') {
-        errors.message = 'Required';
+        errors.message = t('errorMessages.message');
       }
       return errors;
     },
@@ -36,25 +40,33 @@ function MessageForm(props) {
     'is-invalid': !!formik.errors.message,
   });
 
+  const isSubmitButtonDisabled = postingState === messagesStates.posting
+    || formik.values.message === '' || formik.errors.message;
+
   return (
-    <Form onSubmit={formik.handleSubmit}>
-      <Form.Row>
-        <Col>
+    <form className="w-100" onSubmit={formik.handleSubmit}>
+      <Row>
+        <Col md={11}>
           <Form.Control
-            placeholder="First name"
+            as="textarea"
+            rows={1}
             name="message"
             className={inputClasses}
             value={formik.values.message}
             onChange={formik.handleChange}
+            placeholder={t('inputMessagePlaceholder')}
           />
         </Col>
-        <Col>
-          <Button variant="primary" type="submit" disabled={postingState === 'posting'}>
-            {t('sendMessage')}
+        <Col md={1}>
+          <Button
+            type="submit"
+            disabled={isSubmitButtonDisabled}
+          >
+            <MdSend />
           </Button>
         </Col>
-      </Form.Row>
-    </Form>
+      </Row>
+    </form>
   );
 }
 

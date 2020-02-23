@@ -5,24 +5,31 @@ const initialState = {
     isOpen: false,
     type: 'default',
     error: null,
+    data: {},
   },
 };
 
-const ui = createSlice({
-  name: 'ui',
+const modal = createSlice({
+  name: 'ui/modal',
   initialState,
   reducers: {
     changeModalState(state, action) {
-      const { modalState } = action.payload;
-      state.modalState = modalState;
+      const { ...modalState } = action.payload;
+      state.modalState = {
+        ...state.modalState,
+        ...modalState,
+      };
+    },
+    close() {
+      return initialState;
     },
   },
 });
 
-const { actions, reducer } = ui;
+const { actions, reducer } = modal;
 
 export const {
-  changeModalState,
+  changeModalState, close,
 } = actions;
 
 export default reducer;

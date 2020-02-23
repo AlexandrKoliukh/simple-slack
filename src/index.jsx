@@ -16,18 +16,18 @@ import App from './components/App';
 import UsernameContext from './common/UserameContext';
 import reducer from './store';
 import { addMessage } from './store/messagesSlice';
-import { addChannel, removeChannelHandler } from './store/channelsSlice';
+import { addChannel, removeChannelHandler, renameChannel } from './store/channelsSlice';
 import { socketEvents } from './common/constants';
 
-const isProductionMode = process.env.NODE_ENV !== 'production';
-if (isProductionMode) {
+const isDeveloperMode = process.env.NODE_ENV === 'development';
+if (isDeveloperMode) {
   localStorage.debug = 'chat:*';
 }
 
 const { channels, messages, currentChannelId } = window.gon;
 
 const store = configureStore({
-  devTools: !isProductionMode,
+  devTools: isDeveloperMode,
   reducer,
   preloadedState: {
     messages: {
@@ -51,6 +51,9 @@ io()
   })
   .on(socketEvents.removeChannel, ({ data }) => {
     store.dispatch(removeChannelHandler({ id: data.id }));
+  })
+  .on(socketEvents.renameChannel, ({ data }) => {
+    store.dispatch(renameChannel({ id: data.id, name: data.attributes.name }));
   });
 
 let userName = Cookies.get('userName');

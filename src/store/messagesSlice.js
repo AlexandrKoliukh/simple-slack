@@ -2,33 +2,22 @@ import { createSlice } from '@reduxjs/toolkit';
 import { remove } from 'lodash';
 import * as service from '../service';
 import * as channelsActions from './channelsSlice';
+import { processStates } from '../common/constants';
+import { fetchedHandler, fetchingFailedHandler, fetchingHandler } from './utils';
 
 const initialState = {
-  postingState: 'none',
+  fetchingState: processStates.none,
   data: [],
   error: null,
-};
-
-const start = (state) => {
-  state.postingState = 'posting';
-  state.error = null;
-};
-
-const failed = (state, action) => {
-  const { error } = action.payload;
-  state.postingState = 'failed';
-  state.error = error;
 };
 
 const messages = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    postMessageStart: start,
-    postMessageSuccess(state) {
-      state.postingState = 'posted';
-    },
-    postMessageFailure: failed,
+    postMessageStart: fetchingHandler,
+    postMessageSuccess: fetchedHandler,
+    postMessageFailure: fetchingFailedHandler,
     addMessage(state, action) {
       const { newMessage } = action.payload;
       state.data.push(newMessage);
@@ -50,12 +39,11 @@ export const {
 
 export const postMessage = (channelId, attributes) => (dispatch) => {
   dispatch(postMessageStart());
-  service.postMessage(channelId, attributes)
+  return service.postMessage(channelId, attributes)
     .then(() => {
       dispatch(postMessageSuccess());
     })
-    .catch((e) => {
-      const error = { message: e.message };
+    .catch((error) => {
       dispatch(postMessageFailure({ error }));
     });
 };

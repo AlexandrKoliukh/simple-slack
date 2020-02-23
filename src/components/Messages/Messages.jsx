@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { filter } from 'lodash';
 import { Media } from 'react-bootstrap';
 import moment from 'moment';
-import * as messagesActions from '../../store/messagesSlice';
 
 function Messages(props) {
   const { messages, currentChannelId } = props;

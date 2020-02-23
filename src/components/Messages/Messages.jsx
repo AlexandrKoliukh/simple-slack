@@ -1,11 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { filter } from 'lodash';
+import { Media } from 'react-bootstrap';
+import moment from 'moment';
 import * as messagesActions from '../../store/messagesSlice';
 
 function Messages(props) {
   const { messages, currentChannelId } = props;
   const messagesForCurrentChannel = filter(messages, { channelId: currentChannelId });
+
+  moment.locale(window.navigator.language);
 
   return (
     <div className="col fields">
@@ -14,12 +18,19 @@ function Messages(props) {
           const {
             text, id, username, date,
           } = m;
+
+          const formattedDate = moment(date).calendar();
+
           return (
-            <div className="border rounded row mt-2 p-2" key={id}>
-              <span>{username}</span>
-              <span>{date}</span>
-              <div style={{ color: 'red' }}>{text}</div>
-            </div>
+            <Media key={`message-${id}`}>
+              <Media.Body>
+                <span className="mr-2">{username}</span>
+                <span style={{ color: 'silver' }}>{formattedDate}</span>
+                <p>
+                  {text}
+                </p>
+              </Media.Body>
+            </Media>
           );
         })
       }

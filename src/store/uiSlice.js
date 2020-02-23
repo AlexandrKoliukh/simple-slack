@@ -9,8 +9,8 @@ const initialState = {
   },
 };
 
-const ui = createSlice({
-  name: 'ui',
+const modal = createSlice({
+  name: 'ui/modal',
   initialState,
   reducers: {
     changeModalState(state, action) {
@@ -26,7 +26,7 @@ const ui = createSlice({
   },
 });
 
-const { actions, reducer } = ui;
+const { actions, reducer } = modal;
 
 export const {
   changeModalState, close,

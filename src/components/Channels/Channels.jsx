@@ -5,14 +5,25 @@ import {
   Button, Nav, Row,
 } from 'react-bootstrap';
 import * as channelsActions from '../../store/channelsSlice';
+import { changeModalState as changeModalStateAction } from '../../store/uiSlice';
+import { modalStateTypes } from '../../common/constants';
 
 function Channels(props) {
   const {
     changeCurrentChannel, currentChannelId, channels,
+    changeModalState,
   } = props;
 
   const handleSelect = (id) => {
     changeCurrentChannel({ id: Number(id) });
+  };
+
+  const handleEdit = (id, name) => () => {
+    changeModalState({ isOpen: true, type: modalStateTypes.channelEdit, data: { id, name } });
+  };
+
+  const handleDelete = (id, name) => () => {
+    changeModalState({ isOpen: true, type: modalStateTypes.channelDelete, data: { id, name } });
   };
 
   return (
@@ -35,11 +46,11 @@ function Channels(props) {
             </div>
             {removable && (
               <div>
-                <Button size="sm" variant="info">
+                <Button size="sm" variant="info" onClick={handleEdit(id, name)}>
                   <MdEdit />
                 </Button>
                 {' '}
-                <Button size="sm" variant="danger">
+                <Button size="sm" variant="danger" onClick={handleDelete(id, name)}>
                   <MdDeleteForever />
                 </Button>
               </div>
@@ -58,6 +69,7 @@ const mapStateToProps = (state) => ({
 
 const actionCreators = {
   ...channelsActions,
+  changeModalState: changeModalStateAction,
 };
 
 export default connect(mapStateToProps, actionCreators)(Channels);

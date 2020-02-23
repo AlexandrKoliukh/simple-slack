@@ -4,17 +4,20 @@ import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { connect } from 'react-redux';
 import {
-  Button, Col, Form, Row,
+  Alert,
+  Button, Form, Row, Spinner,
 } from 'react-bootstrap';
 import { MdSend } from 'react-icons/md';
 import { postMessage as postMessageAction } from '../../store/messagesSlice';
 import UsernameContext from '../../common/UserameContext';
-import { messagesStates } from '../../common/constants';
+import { processStates } from '../../common/constants';
 
 function MessageForm(props) {
   const { t } = useTranslation();
   const username = useContext(UsernameContext);
-  const { postMessage, currentChannelId, postingState } = props;
+  const {
+    postMessage, currentChannelId, fetchingState, error,
+  } = props;
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -40,39 +43,54 @@ function MessageForm(props) {
     'is-invalid': !!formik.errors.message,
   });
 
-  const isSubmitButtonDisabled = postingState === messagesStates.posting
+  const isFetching = fetchingState === processStates.fetching;
+
+  const isSubmitButtonDisabled = isFetching
     || formik.values.message === '' || formik.errors.message;
 
+
   return (
-    <form className="w-100" onSubmit={formik.handleSubmit}>
-      <Row>
-        <Col md={11}>
-          <Form.Control
-            as="textarea"
-            rows={1}
-            name="message"
-            className={inputClasses}
-            value={formik.values.message}
-            onChange={formik.handleChange}
-            placeholder={t('inputMessagePlaceholder')}
-          />
-        </Col>
-        <Col md={1}>
-          <Button
-            type="submit"
-            disabled={isSubmitButtonDisabled}
-          >
-            <MdSend />
-          </Button>
-        </Col>
-      </Row>
-    </form>
+    <>
+      {error && <Alert variant="danger">{error.message}</Alert>}
+      <form className="w-100" onSubmit={formik.handleSubmit}>
+        <Row className="d-flex justify-content-between m-1">
+          <div className="flex-grow-1">
+            <Form.Control
+              as="textarea"
+              rows={1}
+              name="message"
+              className={inputClasses}
+              value={formik.values.message}
+              onChange={formik.handleChange}
+              placeholder={t('inputMessagePlaceholder')}
+            />
+          </div>
+          <div className="ml-1">
+            <Button
+              type="submit"
+              disabled={isSubmitButtonDisabled}
+            >
+              {isFetching ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : <MdSend />}
+            </Button>
+          </div>
+        </Row>
+      </form>
+    </>
   );
 }
 
 const mapStateToProps = (state) => ({
-  postingState: state.messages.postingState,
+  fetchingState: state.messages.fetchingState,
   currentChannelId: state.channels.currentChannelId,
+  error: state.messages.error,
 });
 
 const actionCreators = {

@@ -5,6 +5,7 @@ const initialState = {
     isOpen: false,
     type: 'default',
     error: null,
+    data: {},
   },
 };
 
@@ -13,8 +14,14 @@ const ui = createSlice({
   initialState,
   reducers: {
     changeModalState(state, action) {
-      const { modalState } = action.payload;
-      state.modalState = modalState;
+      const { ...modalState } = action.payload;
+      state.modalState = {
+        ...state.modalState,
+        ...modalState,
+      };
+    },
+    close() {
+      return initialState;
     },
   },
 });
@@ -22,7 +29,7 @@ const ui = createSlice({
 const { actions, reducer } = ui;
 
 export const {
-  changeModalState,
+  changeModalState, close,
 } = actions;
 
 export default reducer;

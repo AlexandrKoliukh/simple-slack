@@ -1,43 +1,57 @@
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { changeModalState as changeModalStateAction } from '../store/uiSlice';
+import { useTranslation } from 'react-i18next';
+import { changeModalState as changeModalStateAction, close as closeAction } from '../store/uiSlice';
+import { removeChannel as removeChannelAction } from '../store/channelsSlice';
+import { modalStateTypes } from '../common/constants';
+import EditChannelForm from './Channels/EditChannelForm';
+import DeleteChannelForm from './Channels/DeleteChannelForm';
 
 function CustomModal(props) {
-  const { modalState } = props;
-  const { isOpen } = modalState;
+  const { t } = useTranslation();
+  const { modalState, close } = props;
 
-  // const handleClose = () => {
-  //   changeModalState({
-  //     isOpen: false,
-  //     type: 'default',
-  //     error: null,
-  //   });
-  // };
+  const {
+    data, isOpen, type,
+  } = modalState;
+
+  if (type === 'default') return null;
+
+  const channelsTranslation = (key) => t(`modal.${type}.${key}`, { name: data.name });
+
+  const typesMapping = {
+    [modalStateTypes.channelDelete]: {
+      body: (
+        <DeleteChannelForm
+          channelsTranslation={channelsTranslation}
+          id={data.id}
+          close={close}
+        />
+      ),
+    },
+    [modalStateTypes.channelEdit]: {
+      body: (
+        <EditChannelForm
+          name={data.name}
+          id={data.id}
+          close={close}
+          channelsTranslation={channelsTranslation}
+        />
+      ),
+    },
+  };
+
+  const modalData = typesMapping[type];
 
   return (
     <Modal
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      centered
       show={isOpen}
+      onHide={close}
     >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h4>Centered Modal</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button>Close</Button>
-      </Modal.Footer>
+      {modalData.body}
     </Modal>
   );
 }
@@ -48,6 +62,8 @@ const mapStateToProps = (state) => ({
 
 const actionCreators = {
   changeModalState: changeModalStateAction,
+  close: closeAction,
+  removeChannel: removeChannelAction,
 };
 
 export default connect(mapStateToProps, actionCreators)(CustomModal);

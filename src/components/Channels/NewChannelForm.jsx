@@ -1,17 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Form, Row } from 'react-bootstrap';
+import {
+  Alert, Button, Form, Row, Spinner,
+} from 'react-bootstrap';
 import { MdAddBox } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { createChannel as createChannelAction } from '../../store/channelsSlice';
+import { processStates } from '../../common/constants';
 
 function NewChannelForm(props) {
   const { t } = useTranslation();
 
-  const { createChannel } = props;
-
-  const isSubmitButtonDisabled = false;
+  const { createChannel, fetchingState, error } = props;
 
   const formik = useFormik({
     initialValues: {
@@ -19,39 +20,58 @@ function NewChannelForm(props) {
     },
     onSubmit(values) {
       const { channel: name } = values;
-      createChannel(name);
+      createChannel(name)
+        .then(() => {
+          formik.resetForm();
+        });
     },
   });
 
+  const isFetching = fetchingState === processStates.fetching;
+
   return (
-    <Form onSubmit={formik.handleSubmit}>
-      <Row className="d-flex justify-content-between m-1 flex-nowrap">
-        <div>
-          <Form.Control
-            placeholder={t('newChannel')}
-            size="sm"
-            name="channel"
-            value={formik.values.channel}
-            onChange={formik.handleChange}
-          />
-        </div>
-        <div>
-          <Button
-            type="submit"
-            disabled={isSubmitButtonDisabled}
-            size="sm"
-            variant="success"
-            className="ml-1"
-          >
-            <MdAddBox />
-          </Button>
-        </div>
-      </Row>
-    </Form>
+    <>
+      {error && <Alert variant="danger">{error.message}</Alert>}
+      <Form onSubmit={formik.handleSubmit}>
+        <Row className="d-flex justify-content-between m-1 flex-nowrap">
+          <div>
+            <Form.Control
+              placeholder={t('newChannel')}
+              size="sm"
+              name="channel"
+              value={formik.values.channel}
+              onChange={formik.handleChange}
+            />
+          </div>
+          <div>
+            <Button
+              type="submit"
+              disabled={isFetching}
+              size="sm"
+              variant="success"
+              className="ml-1"
+            >
+              {isFetching ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : <MdAddBox />}
+            </Button>
+          </div>
+        </Row>
+      </Form>
+    </>
   );
 }
 
-const mapStateToProps = (_state) => ({});
+const mapStateToProps = (state) => ({
+  fetchingState: state.channels.fetchingState,
+  error: state.channels.error,
+});
 
 const actionCreators = {
   createChannel: createChannelAction,

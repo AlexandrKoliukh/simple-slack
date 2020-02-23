@@ -6,6 +6,7 @@ import Channels from './Channels/Channels';
 import Messages from './Messages/Messages';
 import MessageForm from './Messages/MessageForm';
 import NewChannelForm from './Channels/NewChannelForm';
+import CustomModal from './CustomModal';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           </Row>
         </Col>
       </Row>
+      <CustomModal />
     </Container>
   );
 }

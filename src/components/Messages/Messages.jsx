@@ -41,12 +41,9 @@ function Messages(props) {
 
 const mapStateToProps = (state) => ({
   messages: state.messages.data,
-  postingState: state.messages.postingState,
   currentChannelId: state.channels.currentChannelId,
 });
 
-const actionCreators = {
-  ...messagesActions,
-};
+const actionCreators = {};
 
 export default connect(mapStateToProps, actionCreators)(Messages);

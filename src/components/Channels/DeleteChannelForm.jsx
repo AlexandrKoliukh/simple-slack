@@ -18,7 +18,7 @@ function DeleteChannelForm(props) {
 
   return (
     <>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
           {channelsTranslation('title')}
         </Modal.Title>

@@ -2,9 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   modalState: {
-    isOpen: false,
-    type: 'default',
-    error: null,
+    show: false,
+    type: null,
     data: {},
   },
 };
@@ -13,15 +12,12 @@ const modal = createSlice({
   name: 'ui/modal',
   initialState,
   reducers: {
-    changeModalState(state, action) {
-      const { ...modalState } = action.payload;
-      state.modalState = {
-        ...state.modalState,
-        ...modalState,
-      };
-    },
-    close() {
-      return initialState;
+    hideModal: () => initialState,
+    showModal: (state, action) => {
+      const { type, data = {} } = action.payload;
+      state.modalState.show = true;
+      state.modalState.type = type;
+      state.modalState.data = data;
     },
   },
 });
@@ -29,7 +25,7 @@ const modal = createSlice({
 const { actions, reducer } = modal;
 
 export const {
-  changeModalState, close,
+  hideModal, showModal,
 } = actions;
 
 export default reducer;

@@ -1,29 +1,27 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
 import {
   Button, Nav, Row,
 } from 'react-bootstrap';
-import * as channelsActions from '../../store/channelsSlice';
-import { changeModalState as changeModalStateAction } from '../../store/uiSlice';
+import { changeCurrentChannel } from '../../store/channelsSlice';
+import { showModal } from '../../store/uiSlice';
 import { modalStateTypes } from '../../common/constants';
 
-function Channels(props) {
-  const {
-    changeCurrentChannel, currentChannelId, channels,
-    changeModalState,
-  } = props;
+function Channels() {
+  const dispatch = useDispatch();
+  const { data: channels, currentChannelId } = useSelector((state) => state.channels);
 
   const handleSelect = (id) => {
-    changeCurrentChannel({ id: Number(id) });
+    dispatch(changeCurrentChannel({ id: Number(id) }));
   };
 
   const handleEdit = (id, name) => () => {
-    changeModalState({ isOpen: true, type: modalStateTypes.channelEdit, data: { id, name } });
+    dispatch(showModal({ type: modalStateTypes.channelRename, data: { id, name } }));
   };
 
   const handleDelete = (id, name) => () => {
-    changeModalState({ isOpen: true, type: modalStateTypes.channelDelete, data: { id, name } });
+    dispatch(showModal({ type: modalStateTypes.channelRemove, data: { id, name } }));
   };
 
   return (
@@ -62,14 +60,4 @@ function Channels(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  currentChannelId: state.channels.currentChannelId,
-  channels: state.channels.data,
-});
-
-const actionCreators = {
-  ...channelsActions,
-  changeModalState: changeModalStateAction,
-};
-
-export default connect(mapStateToProps, actionCreators)(Channels);
+export default Channels;

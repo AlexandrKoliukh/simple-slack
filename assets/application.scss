@@ -1,19 +1,5 @@
 @import '~bootstrap/scss/bootstrap';
 
 html {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
   font-size: 14px;
-}
-
-body {
-  height: 100%;
-  padding-top: 10px;
-}
-
-#chat {
-  height: 100%;
 }

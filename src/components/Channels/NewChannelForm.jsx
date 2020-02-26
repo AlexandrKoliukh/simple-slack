@@ -1,37 +1,35 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import {
   Alert, Button, Form, Row, Spinner,
 } from 'react-bootstrap';
 import { MdAddBox } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
-import { createChannel as createChannelAction } from '../../store/channelsSlice';
-import { processStates } from '../../common/constants';
+import { createChannel } from '../../service';
 
-function NewChannelForm(props) {
+function NewChannelForm() {
   const { t } = useTranslation();
-
-  const { createChannel, fetchingState, error } = props;
 
   const formik = useFormik({
     initialValues: {
       channel: '',
     },
-    onSubmit(values) {
+    onSubmit: async (values, actions) => {
       const { channel: name } = values;
-      createChannel(name)
-        .then(() => {
-          formik.resetForm();
-        });
+      try {
+        await createChannel(name);
+        actions.resetForm();
+      } catch (e) {
+        actions.setFieldError('async', e);
+      }
     },
   });
 
-  const isFetching = fetchingState === processStates.fetching;
+  const isFetching = !formik.isValidating && formik.isSubmitting;
 
   return (
     <>
-      {error && <Alert variant="danger">{error.message}</Alert>}
+      {formik.errors.async && <Alert variant="danger">{formik.errors.async.message}</Alert>}
       <Form onSubmit={formik.handleSubmit}>
         <Row className="d-flex justify-content-between m-1 flex-nowrap">
           <div>
@@ -39,6 +37,7 @@ function NewChannelForm(props) {
               placeholder={t('newChannel')}
               size="sm"
               name="channel"
+              onBlur={formik.handleBlur}
               value={formik.values.channel}
               onChange={formik.handleChange}
             />
@@ -68,13 +67,4 @@ function NewChannelForm(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  fetchingState: state.channels.fetchingState,
-  error: state.channels.error,
-});
-
-const actionCreators = {
-  createChannel: createChannelAction,
-};
-
-export default connect(mapStateToProps, actionCreators)(NewChannelForm);
+export default NewChannelForm;

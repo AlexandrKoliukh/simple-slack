@@ -16,7 +16,7 @@ import App from './components/App';
 import UsernameContext from './common/UserameContext';
 import reducer from './store';
 import { addMessage } from './store/messagesSlice';
-import { addChannel, removeChannelHandler, renameChannel } from './store/channelsSlice';
+import { addChannel, removeChannel, renameChannel } from './store/channelsSlice';
 import { socketEvents } from './common/constants';
 
 const isDeveloperMode = process.env.NODE_ENV === 'development';
@@ -32,11 +32,9 @@ const store = configureStore({
   preloadedState: {
     messages: {
       data: messages,
-      error: null,
     },
     channels: {
       data: channels,
-      error: null,
       currentChannelId,
     },
   },
@@ -50,7 +48,7 @@ io()
     store.dispatch(addChannel({ newChannel: data.attributes }));
   })
   .on(socketEvents.removeChannel, ({ data }) => {
-    store.dispatch(removeChannelHandler({ id: data.id }));
+    store.dispatch(removeChannel({ id: data.id }));
   })
   .on(socketEvents.renameChannel, ({ data }) => {
     store.dispatch(renameChannel({ id: data.id, name: data.attributes.name }));

@@ -5,14 +5,7 @@ export const socketEvents = {
   renameChannel: 'renameChannel',
 };
 
-export const processStates = {
-  fetching: 'fetching',
-  fetched: 'fetched',
-  failed: 'failed',
-  none: 'none',
-};
-
 export const modalStateTypes = {
-  channelEdit: 'channelEdit',
-  channelDelete: 'channelDelete',
+  channelRename: 'channelRename',
+  channelRemove: 'channelRemove',
 };

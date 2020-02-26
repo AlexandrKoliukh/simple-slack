@@ -1,14 +1,23 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
-import Col from 'react-bootstrap/esm/Col';
-import Row from 'react-bootstrap/cjs/Row';
+import { Col, Row, Container } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import Channels from './Channels/Channels';
 import Messages from './Messages/Messages';
 import MessageForm from './Messages/MessageForm';
 import NewChannelForm from './Channels/NewChannelForm';
-import CustomModal from './CustomModal';
+import getModalComponent from './Modals';
+import ModalWrapper from './Modals/ModalContainer';
 
 function App() {
+  const { type: modalType } = useSelector((state) => state.ui.modalState);
+
+  const renderModal = (type) => {
+    if (!type) return null;
+
+    const Component = getModalComponent(type);
+    return <ModalWrapper WrappedComponent={Component} />;
+  };
+
   return (
     <Container fluid className="h-100">
       <Row>
@@ -26,7 +35,7 @@ function App() {
           </Row>
         </Col>
       </Row>
-      <CustomModal />
+      {renderModal(modalType)}
     </Container>
   );
 }

@@ -2,22 +2,20 @@ import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
-  Alert,
-  Button, Form, Row, Spinner,
+  Alert, Button, Form, Row, Spinner,
 } from 'react-bootstrap';
 import { MdSend } from 'react-icons/md';
-import { postMessage as postMessageAction } from '../../store/messagesSlice';
 import UsernameContext from '../../common/UserameContext';
-import { processStates } from '../../common/constants';
+import * as service from '../../service';
 
-function MessageForm(props) {
+function MessageForm() {
   const { t } = useTranslation();
   const username = useContext(UsernameContext);
-  const {
-    postMessage, currentChannelId, fetchingState, error,
-  } = props;
+  const { currentChannelId } = useSelector((state) => ({
+    currentChannelId: state.channels.currentChannelId,
+  }));
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -28,14 +26,18 @@ function MessageForm(props) {
       }
       return errors;
     },
-    onSubmit: (values) => {
+    onSubmit: async (values, actions) => {
       const attributes = {
         text: values.message,
         username,
         date: new Date(),
       };
-      postMessage(currentChannelId, attributes);
-      formik.resetForm();
+      try {
+        await service.postMessage(currentChannelId, attributes);
+        formik.resetForm();
+      } catch (e) {
+        actions.setFieldError('async', e);
+      }
     },
   });
 
@@ -43,15 +45,14 @@ function MessageForm(props) {
     'is-invalid': !!formik.errors.message,
   });
 
-  const isFetching = fetchingState === processStates.fetching;
+  const isFetching = !formik.isValidating && formik.isSubmitting;
 
   const isSubmitButtonDisabled = isFetching
     || formik.values.message === '' || formik.errors.message;
 
-
   return (
     <>
-      {error && <Alert variant="danger">{error.message}</Alert>}
+      {formik.errors.async && <Alert variant="danger">{formik.errors.async.message}</Alert>}
       <form className="w-100" onSubmit={formik.handleSubmit}>
         <Row className="d-flex justify-content-between m-1">
           <div className="flex-grow-1">
@@ -62,6 +63,7 @@ function MessageForm(props) {
               className={inputClasses}
               value={formik.values.message}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               placeholder={t('inputMessagePlaceholder')}
             />
           </div>
@@ -87,14 +89,4 @@ function MessageForm(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  fetchingState: state.messages.fetchingState,
-  currentChannelId: state.channels.currentChannelId,
-  error: state.messages.error,
-});
-
-const actionCreators = {
-  postMessage: postMessageAction,
-};
-
-export default connect(mapStateToProps, actionCreators)(MessageForm);
+export default MessageForm;

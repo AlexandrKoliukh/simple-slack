@@ -11,11 +11,11 @@ export default {
     },
     modal: {
       [modalStateTypes.channelRename]: {
-        title: 'Редактировать канал',
+        title: 'Редактировать канал {{name}}',
         button: 'Сохранить',
       },
       [modalStateTypes.channelRemove]: {
-        title: 'Удалить канал',
+        title: 'Удалить канал {{name}}',
         button: 'Удалить',
       },
     },

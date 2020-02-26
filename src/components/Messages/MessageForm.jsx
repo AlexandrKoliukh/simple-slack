@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
@@ -14,11 +14,6 @@ function MessageForm() {
   const { t } = useTranslation();
   const username = useContext(UsernameContext);
   const { currentChannelId } = useSelector((state) => state.channels);
-  const messageInputRef = useRef(null);
-
-  useEffect(() => {
-    messageInputRef.current.focus();
-  });
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -64,7 +59,6 @@ function MessageForm() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             placeholder={t('inputMessagePlaceholder')}
-            ref={messageInputRef}
           />
           <div className="ml-1">
             <Button

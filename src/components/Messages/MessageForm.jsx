@@ -13,9 +13,7 @@ import * as service from '../../service';
 function MessageForm() {
   const { t } = useTranslation();
   const username = useContext(UsernameContext);
-  const { currentChannelId } = useSelector((state) => ({
-    currentChannelId: state.channels.currentChannelId,
-  }));
+  const { currentChannelId } = useSelector((state) => state.currentChannelId);
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -46,7 +44,6 @@ function MessageForm() {
   });
 
   const isFetching = !formik.isValidating && formik.isSubmitting;
-
   const isSubmitButtonDisabled = isFetching
     || formik.values.message === '' || formik.errors.message;
 

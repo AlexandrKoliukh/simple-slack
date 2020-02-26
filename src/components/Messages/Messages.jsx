@@ -1,11 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { filter } from 'lodash';
 import { Media } from 'react-bootstrap';
 import moment from 'moment';
 
-function Messages(props) {
-  const { messages, currentChannelId } = props;
+function Messages() {
+  const { messages, currentChannelId } = useSelector((state) => ({
+    messages: state.messages.data,
+    currentChannelId: state.channels.currentChannelId,
+  }));
+
   const messagesForCurrentChannel = filter(messages, { channelId: currentChannelId });
 
   moment.locale(window.navigator.language);
@@ -37,12 +41,4 @@ function Messages(props) {
   );
 }
 
-
-const mapStateToProps = (state) => ({
-  messages: state.messages.data,
-  currentChannelId: state.channels.currentChannelId,
-});
-
-const actionCreators = {};
-
-export default connect(mapStateToProps, actionCreators)(Messages);
+export default Messages;

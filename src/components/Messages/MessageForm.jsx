@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
-import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import {
   Alert, Button, Form, Spinner,
@@ -17,13 +16,6 @@ function MessageForm() {
 
   const formik = useFormik({
     initialValues: { message: '' },
-    validate: (values) => {
-      const errors = {};
-      if (values.message === '') {
-        errors.message = t('errorMessages.message');
-      }
-      return errors;
-    },
     onSubmit: async (values, actions) => {
       const attributes = {
         text: values.message,
@@ -39,13 +31,8 @@ function MessageForm() {
     },
   });
 
-  const inputClasses = cn({
-    'is-invalid': !!formik.errors.message,
-  });
-
   const isFetching = !formik.isValidating && formik.isSubmitting;
-  const isSubmitButtonDisabled = isFetching
-    || formik.values.message === '' || formik.errors.message;
+  const isSubmitButtonDisabled = isFetching || formik.values.message === '';
 
   return (
     <div className="mt-auto">
@@ -54,7 +41,6 @@ function MessageForm() {
         <div className="w-100 d-flex justify-content-between p-1">
           <Form.Control
             name="message"
-            className={inputClasses}
             value={formik.values.message}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

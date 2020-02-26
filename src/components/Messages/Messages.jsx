@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { filter } from 'lodash';
 import { Media } from 'react-bootstrap';
@@ -11,17 +11,21 @@ function Messages() {
   }));
 
   const messagesForCurrentChannel = filter(messages, { channelId: currentChannelId });
+  const lastMessageRef = useRef(null);
+
+  useEffect(() => {
+    lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+  });
 
   moment.locale(window.navigator.language);
 
   return (
-    <div className="col fields">
+    <div className="d-flex flex-column p-2 overflow-auto mb-3">
       {
         messagesForCurrentChannel.map((m) => {
           const {
             text, id, username, date,
           } = m;
-
           const formattedDate = moment(date).calendar();
 
           return (
@@ -37,6 +41,7 @@ function Messages() {
           );
         })
       }
+      <div ref={lastMessageRef} />
     </div>
   );
 }

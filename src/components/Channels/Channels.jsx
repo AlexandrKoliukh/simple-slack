@@ -25,38 +25,40 @@ function Channels() {
   };
 
   return (
-    <Nav
-      variant="pills"
-      className="flex-column"
-      activeKey={currentChannelId}
-      onSelect={handleSelect}
-    >
-      {channels.map((ch) => {
-        const { id, name, removable } = ch;
-        return (
-          <Row key={`nav-${id}`} className="d-flex justify-content-between m-1 flex-nowrap">
-            <div>
-              <Nav.Item>
-                <Nav.Link eventKey={id}>
-                  {name}
-                </Nav.Link>
-              </Nav.Item>
-            </div>
-            {removable && (
+    <div className="d-flex flex-column overflow-auto mb-3">
+      <Nav
+        variant="pills"
+        className="d-flex flex-column"
+        activeKey={currentChannelId}
+        onSelect={handleSelect}
+      >
+        {channels.map((ch) => {
+          const { id, name, removable } = ch;
+          return (
+            <Row key={`nav-${id}`} className="d-flex justify-content-between m-1 flex-nowrap">
               <div>
-                <Button size="sm" variant="info" onClick={handleEdit(id, name)}>
-                  <MdEdit />
-                </Button>
-                {' '}
-                <Button size="sm" variant="danger" onClick={handleDelete(id, name)}>
-                  <MdDeleteForever />
-                </Button>
+                <Nav.Item>
+                  <Nav.Link eventKey={id}>
+                    {name}
+                  </Nav.Link>
+                </Nav.Item>
               </div>
-            )}
-          </Row>
-        );
-      })}
-    </Nav>
+              {removable && (
+                <div>
+                  <Button size="sm" variant="info" onClick={handleEdit(id, name)}>
+                    <MdEdit />
+                  </Button>
+                  {' '}
+                  <Button size="sm" variant="danger" onClick={handleDelete(id, name)}>
+                    <MdDeleteForever />
+                  </Button>
+                </div>
+              )}
+            </Row>
+          );
+        })}
+      </Nav>
+    </div>
   );
 }
 

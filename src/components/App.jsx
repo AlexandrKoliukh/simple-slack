@@ -1,5 +1,4 @@
 import React from 'react';
-import { Col, Row, Container } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import Channels from './Channels/Channels';
 import Messages from './Messages/Messages';
@@ -19,24 +18,24 @@ function App() {
   };
 
   return (
-    <Container fluid className="h-100">
-      <Row>
-        <Col md={2} lg={2}>
-          <Channels />
-          <hr />
-          <NewChannelForm />
-        </Col>
-        <Col md={10} lg={10}>
-          <Row>
+    <div className="container-lg h-100 overflow-hidden">
+      <div className="row h-100 pb-3">
+        <div className="col-3 border-right h-100">
+          <div className="d-flex flex-column h-100">
+            <Channels />
+            <hr />
+            <NewChannelForm />
+          </div>
+        </div>
+        <div className="col-9 h-100">
+          <div className="d-flex flex-column h-100">
             <Messages />
-          </Row>
-          <Row>
             <MessageForm />
-          </Row>
-        </Col>
-      </Row>
+          </div>
+        </div>
+      </div>
       {renderModal(modalType)}
-    </Container>
+    </div>
   );
 }
 

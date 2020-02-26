@@ -28,14 +28,13 @@ function NewChannelForm() {
   const isFetching = !formik.isValidating && formik.isSubmitting;
 
   return (
-    <>
+    <div className="mt-auto">
       {formik.errors.async && <Alert variant="danger">{formik.errors.async.message}</Alert>}
       <Form onSubmit={formik.handleSubmit}>
         <Row className="d-flex justify-content-between m-1 flex-nowrap">
           <div>
             <Form.Control
               placeholder={t('newChannel')}
-              size="sm"
               name="channel"
               onBlur={formik.handleBlur}
               value={formik.values.channel}
@@ -46,7 +45,6 @@ function NewChannelForm() {
             <Button
               type="submit"
               disabled={isFetching}
-              size="sm"
               variant="success"
               className="ml-1"
             >
@@ -63,7 +61,7 @@ function NewChannelForm() {
           </div>
         </Row>
       </Form>
-    </>
+    </div>
   );
 }
 

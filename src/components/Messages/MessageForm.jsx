@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import {
-  Alert, Button, Form, Row, Spinner,
+  Alert, Button, Form, Spinner,
 } from 'react-bootstrap';
 import { MdSend } from 'react-icons/md';
 import UsernameContext from '../../common/UserameContext';
@@ -13,7 +13,7 @@ import * as service from '../../service';
 function MessageForm() {
   const { t } = useTranslation();
   const username = useContext(UsernameContext);
-  const { currentChannelId } = useSelector((state) => state.currentChannelId);
+  const { currentChannelId } = useSelector((state) => state.channels);
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -48,22 +48,20 @@ function MessageForm() {
     || formik.values.message === '' || formik.errors.message;
 
   return (
-    <>
+    <div className="mt-auto">
       {formik.errors.async && <Alert variant="danger">{formik.errors.async.message}</Alert>}
-      <form className="w-100" onSubmit={formik.handleSubmit}>
-        <Row className="d-flex justify-content-between m-1">
-          <div className="flex-grow-1">
-            <Form.Control
-              as="textarea"
-              rows={1}
-              name="message"
-              className={inputClasses}
-              value={formik.values.message}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder={t('inputMessagePlaceholder')}
-            />
-          </div>
+      <form onSubmit={formik.handleSubmit}>
+        <div className="w-100 d-flex justify-content-between p-1">
+          <Form.Control
+            as="textarea"
+            rows={1}
+            name="message"
+            className={inputClasses}
+            value={formik.values.message}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            placeholder={t('inputMessagePlaceholder')}
+          />
           <div className="ml-1">
             <Button
               type="submit"
@@ -80,9 +78,9 @@ function MessageForm() {
               ) : <MdSend />}
             </Button>
           </div>
-        </Row>
+        </div>
       </form>
-    </>
+    </div>
   );
 }
 

@@ -6,7 +6,7 @@ import Messages from './Messages/Messages';
 import MessageForm from './Messages/MessageForm';
 import NewChannelForm from './Channels/NewChannelForm';
 import getModalComponent from './Modals';
-import ModalWrapper from './Modals/ModalContainer';
+import ModalWrapper from './Modals/ModalWrapper';
 
 function App() {
   const { type: modalType } = useSelector((state) => state.ui.modalState);

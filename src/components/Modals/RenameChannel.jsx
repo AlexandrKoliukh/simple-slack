@@ -63,7 +63,7 @@ function RenameChannel(props) {
           )}
           {t(`modal.${modalStateTypes.channelRename}.button`)}
         </Button>
-        <Button onClick={hideModal}>Close</Button>
+        <Button onClick={hideModal}>{t('close')}</Button>
       </Modal.Footer>
     </Form>
   );

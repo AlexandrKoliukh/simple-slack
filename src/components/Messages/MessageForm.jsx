@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
@@ -14,6 +14,11 @@ function MessageForm() {
   const { t } = useTranslation();
   const username = useContext(UsernameContext);
   const { currentChannelId } = useSelector((state) => state.channels);
+  const messageInputRef = useRef(null);
+
+  useEffect(() => {
+    messageInputRef.current.focus();
+  });
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -53,14 +58,13 @@ function MessageForm() {
       <form onSubmit={formik.handleSubmit}>
         <div className="w-100 d-flex justify-content-between p-1">
           <Form.Control
-            as="textarea"
-            rows={1}
             name="message"
             className={inputClasses}
             value={formik.values.message}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             placeholder={t('inputMessagePlaceholder')}
+            ref={messageInputRef}
           />
           <div className="ml-1">
             <Button

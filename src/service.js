@@ -7,14 +7,10 @@ const dataConstructor = (attributes) => ({
   },
 });
 
-export const getMessages = (channelId) => axios.get(routes.channelMessagesPath(channelId));
-
 export const postMessage = (channelId, attributes) => {
   const data = dataConstructor({ ...attributes });
   return axios.post(routes.channelMessagesPath(channelId), data);
 };
-
-export const getChannels = () => axios.get(routes.channelsPath());
 
 export const removeChannel = (channelId) => axios.delete(routes.channelPath(channelId));
 

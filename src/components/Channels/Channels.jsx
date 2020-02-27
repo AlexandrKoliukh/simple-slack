@@ -13,15 +13,15 @@ function Channels() {
   const { data: channels, currentChannelId } = useSelector((state) => state.channels);
 
   const handleSelect = (id) => {
-    dispatch(changeCurrentChannel({ id: Number(id) }));
+    changeCurrentChannel({ id: Number(id) }) |> dispatch;
   };
 
   const handleEdit = (id, name) => () => {
-    dispatch(showModal({ type: modalStateTypes.channelRename, data: { id, name } }));
+    showModal({ type: modalStateTypes.channelRename, data: { id, name } }) |> dispatch;
   };
 
   const handleDelete = (id, name) => () => {
-    dispatch(showModal({ type: modalStateTypes.channelRemove, data: { id, name } }));
+    showModal({ type: modalStateTypes.channelRemove, data: { id, name } }) |> dispatch;
   };
 
   return (

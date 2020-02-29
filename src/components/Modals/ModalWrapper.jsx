@@ -6,7 +6,7 @@ import { hideModal as hideModalAction } from '../../store/uiSlice';
 function ModalWrapper(props) {
   const dispatch = useDispatch();
   const { show, data } = useSelector((state) => state.ui.modalState);
-  const hideModal = () => dispatch(hideModalAction());
+  const hideModal = () => hideModalAction() |> dispatch;
 
   const { WrappedComponent } = props;
 

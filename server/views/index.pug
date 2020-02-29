@@ -1,11 +1,11 @@
 doctype html
-html(lang="en")
+html(lang="en", class='h-100')
   head
     title= Title
     link(rel="stylesheet" href=assetPath('main.css'))
     script.
       var gon = !{JSON.stringify(gon)};
-  body
-    #chat
+  body(class='h-100')
+    #chat(class='h-100')
     // block content
     script(src=assetPath('main.js'))

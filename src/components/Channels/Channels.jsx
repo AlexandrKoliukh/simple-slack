@@ -8,7 +8,7 @@ import { changeCurrentChannel } from '../../store/channelsSlice';
 import { showModal } from '../../store/uiSlice';
 import { modalStateTypes } from '../../common/constants';
 
-function Channels() {
+const Channels = () => {
   const dispatch = useDispatch();
   const { data: channels, currentChannelId } = useSelector((state) => state.channels);
 
@@ -60,6 +60,6 @@ function Channels() {
       </Nav>
     </div>
   );
-}
+};
 
 export default Channels;

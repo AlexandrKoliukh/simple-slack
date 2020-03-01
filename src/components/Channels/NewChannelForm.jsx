@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { createChannel } from '../../service';
 
-function NewChannelForm() {
+const NewChannelForm = () => {
   const { t } = useTranslation();
 
   const formik = useFormik({
@@ -63,6 +63,6 @@ function NewChannelForm() {
       </Form>
     </div>
   );
-}
+};
 
 export default NewChannelForm;

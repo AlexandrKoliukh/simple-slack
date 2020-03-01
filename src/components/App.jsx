@@ -7,7 +7,7 @@ import NewChannelForm from './Channels/NewChannelForm';
 import getModalComponent from './Modals';
 import ModalWrapper from './Modals/ModalWrapper';
 
-function App() {
+const App = () => {
   const { type: modalType } = useSelector((state) => state.ui.modalState);
 
   const renderModal = (type) => {
@@ -37,6 +37,6 @@ function App() {
       {renderModal(modalType)}
     </div>
   );
-}
+};
 
 export default App;

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { filter } from 'lodash';
 import { Media } from 'react-bootstrap';
-import formatDistanceToNow from '../../../lib/formatDistanceToNow';
+import formatDistanceToNow from '../../common/formatDistanceToNow';
 
 const Messages = () => {
   const { messages, currentChannelId } = useSelector((state) => ({

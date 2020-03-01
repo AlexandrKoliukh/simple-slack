@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { removeChannel } from '../../service';
 import { modalStateTypes } from '../../common/constants';
 
-function RemoveChannel(props) {
+const RemoveChannel = (props) => {
   const { t } = useTranslation();
   const { hideModal, data } = props;
   const { id, name } = data;
@@ -51,6 +51,6 @@ function RemoveChannel(props) {
       </Modal.Footer>
     </>
   );
-}
+};
 
 export default RemoveChannel;

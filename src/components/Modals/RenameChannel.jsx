@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { patchChannel } from '../../service';
 import { modalStateTypes } from '../../common/constants';
 
-function RenameChannel(props) {
+const RenameChannel = (props) => {
   const { t } = useTranslation();
   const { data, hideModal } = props;
   const { id, name } = data;
@@ -67,6 +67,6 @@ function RenameChannel(props) {
       </Modal.Footer>
     </Form>
   );
-}
+};
 
 export default RenameChannel;

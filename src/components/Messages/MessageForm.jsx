@@ -9,7 +9,7 @@ import { MdSend } from 'react-icons/md';
 import UsernameContext from '../../common/UserameContext';
 import * as service from '../../service';
 
-function MessageForm() {
+const MessageForm = () => {
   const { t } = useTranslation();
   const username = useContext(UsernameContext);
   const { currentChannelId } = useSelector((state) => state.channels);
@@ -66,6 +66,6 @@ function MessageForm() {
       </form>
     </div>
   );
-}
+};
 
 export default MessageForm;

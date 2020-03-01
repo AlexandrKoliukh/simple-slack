@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { filter } from 'lodash';
 import { Media } from 'react-bootstrap';
-import moment from 'moment';
+import formatDistanceToNow from '../../../lib/formatDistanceToNow';
 
-function Messages() {
+const Messages = () => {
   const { messages, currentChannelId } = useSelector((state) => ({
     messages: state.messages.data,
     currentChannelId: state.channels.currentChannelId,
@@ -17,8 +17,6 @@ function Messages() {
     lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
   });
 
-  moment.locale(window.navigator.language);
-
   return (
     <div className="d-flex flex-column p-2 overflow-auto mb-3">
       {
@@ -26,7 +24,7 @@ function Messages() {
           const {
             text, id, username, date,
           } = m;
-          const formattedDate = moment(date).calendar();
+          const formattedDate = formatDistanceToNow(new Date(date));
 
           return (
             <Media key={`message-${id}`}>
@@ -44,6 +42,6 @@ function Messages() {
       <div ref={lastMessageRef} />
     </div>
   );
-}
+};
 
 export default Messages;

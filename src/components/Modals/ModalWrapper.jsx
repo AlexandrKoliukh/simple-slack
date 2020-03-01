@@ -3,10 +3,10 @@ import { Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { hideModal as hideModalAction } from '../../store/uiSlice';
 
-function ModalWrapper(props) {
+const ModalWrapper = (props) => {
   const dispatch = useDispatch();
   const { show, data } = useSelector((state) => state.ui.modalState);
-  const hideModal = () => dispatch(hideModalAction());
+  const hideModal = () => hideModalAction() |> dispatch;
 
   const { WrappedComponent } = props;
 
@@ -20,6 +20,6 @@ function ModalWrapper(props) {
       <WrappedComponent data={data} hideModal={hideModal} />
     </Modal>
   );
-}
+};
 
 export default ModalWrapper;
